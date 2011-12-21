@@ -1,6 +1,5 @@
 #!/usr/bin/python2.7
 
-# Add notes and description about the task
 '''
 Today Date added
 Show List added
@@ -22,6 +21,8 @@ negative days also included in changing the dates
 Number of days(from today) included in getting the date of the task
 Notes and Description Added
 View notes and Description added
+change_date() function modified. Now looks good.
+check_valid(date) funciton modified.
 '''
 
 import pickle
@@ -32,85 +33,22 @@ from operator import itemgetter
 
 def check_valid(date):
   year, mon, day = date
-  if mon <= 12 and mon>0:
-    if day <= 31 and day>0:
-      if mon==4 or mon ==6 or mon==9 or mon==11:
-        if day > 30:
-          return 0        
-        else:
-          return 1
-      elif mon==2:
-        if year%4 ==0:
-          if day>29:
-            return 0
-          else:
-            return 1
-        else:
-          if day>28:
-            return
-          else:
-            return 1
-      else:
-        return 1
-    else:
-      return 0
-  else:
+  year = str(year)
+  mon = str(mon)
+  day = str(day)
+  date = year+mon+day
+  try:
+    time.strptime(date,'%Y%m%d')
+    return 1
+  except ValueError:
     return 0
 
-def change_date(date,num):
-  year, mon, day = date
-  new_year, new_mon, new_day = date
-  
-  if mon==1 or mon ==3 or mon==5 or mon==7 or mon==8 or mon==10 or mon==12 :
-    if day+num > 31:
-      if mon == 12:
-        new_mon == 1
-        new_year = year+1
-        new_date = date+num - 31
-      else:
-        new_mon=mon+1
-        new_date = date+num - 31
-    elif day+num<1:
-      if mon == 1 or mon == 8:
-        if mon == 1:
-          new_mon = 12
-          new_year = year - 1
-        else:
-          new_mon = mon - 1
-        new_date = 31 - (date+num)
-    else:
-      new_day = day+num
-  elif mon==2 :
-    if year%4 == 0:
-      if day+num > 29:
-        new_mon=mon+1
-        new_day = day+num - 29
-      else:
-        new_day = day+num
-    else:
-      if day+num > 28:
-        new_mon = mon+1
-        new_day = day+num - 28
-      else:
-        new_day = day+num
-  elif mon == 3:
-    if day+num < 1:
-      if year%4 == 0:
-        new_date = 29 - (day+num)
-      else:
-        new_date = 28 - (day+num)
-      new_mon = 2
-  else:
-    if day+num > 30:
-      new_mon = mon+1
-      new_day = day+num - 30
-    elif day+num<1:
-      new_mon = mon - 1
-      new_date = 31 - (date+num)
-    else:
-      new_day = day+num
-
-  new_date = (new_year,new_mon,new_day)
+def change_date(num):
+  sec = num*24*3600
+  sec = time.time()+sec
+  t = time.ctime(sec)
+  t_struct = time.strptime(t)
+  new_date = t_struct[0:3]
   return new_date    
   
 def get_date_string(date):
@@ -130,9 +68,9 @@ def get_task_date():
   if n==1:
     date=date_today
   elif n==2:
-    date = change_date(date_today,1)
+    date = change_date(1)
   elif n==3:
-    date = change_date(date_today,-1)
+    date = change_date(-1)
   elif n==4:
     date = get_task_from_date()
   elif n==5:
@@ -154,9 +92,9 @@ def get_task_from_date():
     num = get_int('Number of days\t')
     if num < 30:
       if n==1:
-        date = change_date(date_today,num)
+        date = change_date(num)
       else:
-        date = change_date(date_today,-num)
+        date = change_date(-num)
     else:
       print 'Number of days should be less than 30'
       date = get_task_from_date()
@@ -394,7 +332,7 @@ def main():
   date = datetime.date.today().timetuple()[:3]
   tmdb=gdbm.open('Taskmanager','c')
   show_task(date,tmdb)
-  date = change_date(date,1)
+  date = change_date(1)
   show_task(date,tmdb)
   while n!=5:
     n=show_menu()
