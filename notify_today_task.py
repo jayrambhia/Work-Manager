@@ -17,9 +17,9 @@ def get_task_list(date,tmdb):
   try:
     task_list = pickle.loads(tmdb[task_key])
     task_list = sorted(task_list,key=itemgetter(1,2)) # Sort task_list according to status and priority.
+    return task_list
   except KeyError:
     return task_list
-  return task_list
 
 def main():
   date = datetime.date.today().timetuple()[:3]
@@ -37,7 +37,6 @@ def main():
     str1 = str1 + 'No Task'
   str1 = str1 + "'"
   if task_list:
-#    time.sleep(6) Delyas the log in
     for i in range(len(task_list)):
       notify(str1)
   else:
