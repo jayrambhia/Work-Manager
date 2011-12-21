@@ -1,0 +1,3 @@
+TaskManager is a task manager in which you can add task, remove task, view task, check task, set task priority according to specified date or number of days from the current date.
+It shows task in sorted manner in which Incompleted tasks are shown first according to their priorities and priority and "Incompleted" is also mentioned.
+Notify_today_task gives you notification regarding today's tasks. You can also get task notification everytime you log-in by adding a command in .profile.
