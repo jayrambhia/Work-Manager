@@ -90,14 +90,13 @@ def get_task_from_date():
   
   if n==1 or n==2:
     num = get_int('Number of days\t')
-    if num < 30:
-      if n==1:
-        date = change_date(num)
-      else:
-        date = change_date(-num)
+    if n==1:
+      date = change_date(num)
     else:
-      print 'Number of days should be less than 30'
-      date = get_task_from_date()
+      date = change_date(-num)
+  else:
+    print 'Number of days should be less than 30'
+    date = get_task_from_date()
   elif n==3:
     print 'Enter date(month day year):'
     d = raw_input().split()
