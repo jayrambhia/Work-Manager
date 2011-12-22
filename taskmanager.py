@@ -131,23 +131,17 @@ def get_task_num(date,tmdb):
   task_list = get_task_list(date,tmdb)
   if task_list:
     n=get_int('Enter the number of the task(0 to exit)')
-    
     if n<0 or n>len(task_list):
       print 'Invalid option'
       n = get_task_num(date,tmdb)
-      return n 
-    else:
-      return n
+    return n
           
 def show_task_main(tmdb):
   print 'Show Task'
   date = get_task_date()
-    
   if date:
     show_task(date,tmdb)
-    return
-  else:
-    return
+  return
       
 def show_task(date,tmdb):
   print
@@ -165,6 +159,7 @@ def show_task(date,tmdb):
     print date,'Task.'
   
   task_list = get_task_list(date,tmdb)
+  
   if task_list:
     for i in range(len(task_list)):
       print str(i+1)+'.', task_list[i][0],
@@ -177,13 +172,11 @@ def show_task(date,tmdb):
       else:
         print '\t---Completed'
   else:
-    print 'No task for',get_date_string(date)
-    print
+    print 'No task for',get_date_string(date),'\n'
       
 def assign_task_main(tmdb):
   print 'Assign Task for'
   date = get_task_date()
-  
   if date:
     assign_task(date,tmdb)
   return
@@ -216,8 +209,7 @@ def show_des_note(tmdb):
     n = get_task_num(date,tmdb)
     if n:
       task_list = get_task_list(date,tmdb)
-      print task_list[n-1][0]
-      print '\nDescription:'
+      print task_list[n-1][0],'\nDescription:'
       if task_list[n-1][3]:
         print task_list[n-1][3]
       else:
@@ -234,9 +226,7 @@ def check_task_main(tmdb):
   date = get_task_date()
   if date:
     check_task(date,tmdb)
-    return
-  else:
-    return 
+  return
           
 def check_task(date,tmdb):
   n = get_task_num(date,tmdb)
