@@ -113,9 +113,9 @@ def get_task_list(date,tmdb):
   try:
     task_list = pickle.loads(tmdb[task_key])
     task_list = sorted(task_list,key=itemgetter(1,2)) # Sort task_list according to status and priority.
+    return task_list
   except KeyError:
     return task_list
-  return task_list
   
 def get_int(string=''):
   while True:
@@ -136,8 +136,6 @@ def get_task_num(date,tmdb):
       print 'Invalid option'
       n = get_task_num(date,tmdb)
       return n 
-    elif n==0:
-      return 0
     else:
       return n
           
@@ -188,9 +186,7 @@ def assign_task_main(tmdb):
   
   if date:
     assign_task(date,tmdb)
-    return
-  else:
-    return
+  return
       
 def assign_task(date,tmdb):
   task_list=get_task_list(date,tmdb)
@@ -251,14 +247,10 @@ def check_task(date,tmdb):
       if status==2:
         return
     task_list = get_task_list(date,tmdb)
-    task_list = change_task_status(task_list,n,status)
+    task_list[n-1][1]=status                  # Change the satus of the task
     tmdb = sync_DB(date,task_list,tmdb)
     check_task(date,tmdb)
     return
-    
-def change_task_status(task_list,n,status):
-  task_list[n-1][1]=status
-  return task_list
   
 def get_priority():
   priority = get_int('Enter Task Priority\n0-Urgent\t1-Important\t2-Normal\tChoose an option\t')
@@ -274,36 +266,28 @@ def change_priority_main(tmdb):
   date = get_task_date()
   if date:
     change_priority(date,tmdb)
-    return
-  else:
-    return 
+  return
     
 def change_priority(date,tmdb):
   n = get_task_num(date,tmdb)
   if n:
     priority=42
     while priority!=0 and priority!=1 and priority!= 2:
-      priority=get_int('Urgent(0)--Important(1)--Normal(2)--Exit(3)')
+      priority=get_int('Urgent(0)--Important(1)--Normal(2)--Exit(3)\t')
       if priority==3:
         return
     task_list = get_task_list(date,tmdb)
-    task_list = change_task_priority(task_list,n,priority)
+    task_list[n-1][2]=priority      # Change the priority
     tmdb = sync_DB(date,task_list,tmdb)
     change_priority(date,tmdb)
     return
-
-def change_task_priority(task_list,n,priority):
-  task_list[n-1][2]=priority
-  return task_list
   
 def remove_task_main(tmdb):
   print 'Remove Task'
   date = get_task_date()
   if date:
     remove_task(date,tmdb)
-    return
-  else:
-    return
+  return
      
 def remove_task(date,tmdb):
   n = get_task_num(date,tmdb)
@@ -312,10 +296,9 @@ def remove_task(date,tmdb):
     task_list.remove(task_list[n-1])
     tmdb = sync_DB(date,task_list,tmdb)
     remove_task(date,tmdb)
-    return
   else:
     print 'No task.'
-    return    
+  return    
 
 def sync_DB(date,task_list,tmdb):  
   task_key=pickle.dumps(date)
