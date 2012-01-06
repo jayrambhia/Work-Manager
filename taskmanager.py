@@ -30,6 +30,7 @@ import gdbm
 import time
 import datetime
 from operator import itemgetter
+import os
 
 def check_valid(date):
   year, mon, day = date
@@ -299,7 +300,8 @@ def sync_DB(date,task_list,tmdb):
 def main():
   n=42
   date = datetime.date.today().timetuple()[:3]
-  tmdb=gdbm.open('Taskmanager','c')
+  Path = os.path.abspath('')
+  tmdb=gdbm.open(Path+'/Taskmanager','c')
   show_task(date,tmdb)
   date = change_date(1)
   show_task(date,tmdb)
@@ -318,6 +320,7 @@ def main():
     elif n==6:
       show_des_note(tmdb)
     elif n==7:
+      tmdb.close()
       return
     else:
       print 'Invalid option'
